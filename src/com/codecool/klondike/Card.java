@@ -81,11 +81,7 @@ public class Card extends ImageView {
         String cardColor1 = getCardColor(card1);
         String cardColor2 = getCardColor(card2);
 
-        if(cardColor1.equals(cardColor2)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !cardColor1.equals(cardColor2);
     }
 
     public static  String getCardColor(Card card) {
