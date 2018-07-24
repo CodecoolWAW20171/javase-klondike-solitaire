@@ -92,6 +92,10 @@ public class Card extends ImageView {
         return false;
     }
 
+    public static boolean isHigherRank(Card card1, Card card2) {
+        return card1.getRank() == card2.getRank() + 1;
+    }
+
     public static boolean isSameSuit(Card card1, Card card2) {
         return card1.getSuit() == card2.getSuit();
     }
