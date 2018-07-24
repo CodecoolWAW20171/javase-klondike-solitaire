@@ -89,7 +89,7 @@ public class Game extends Pane {
 
     public boolean isGameWon() {
         for (Card card: deck)
-            if (card.isFaceDown()) return false;
+            if (!card.getContainingPile().equals(Pile.PileType.FOUNDATION)) return false;
         return true;
     }
 
