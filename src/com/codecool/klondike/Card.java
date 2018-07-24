@@ -78,7 +78,6 @@ public class Card extends ImageView {
     }
 
     public static boolean isOppositeColor(Card card1, Card card2) {
-<<<<<<< HEAD
         String cardColor1 = getCardColor(card1);
         String cardColor2 = getCardColor(card2);
 
@@ -91,20 +90,6 @@ public class Card extends ImageView {
         } else {
             return "black";
         }
-=======
-        List<String> red = new ArrayList<>();
-        red.add("hearts");
-        red.add("diamonds");
-        List<String> black = new ArrayList<>();
-        black.add("spades");
-        black.add("clubs");
-        if (black.contains(card1.getSuit()) && red.contains(card2.getSuit())) {
-            return true;
-        } else if (red.contains(card1.getSuit()) && black.contains(card2.getSuit())) {
-            return true;
-        }
-        return false;
->>>>>>> Develop
     }
 
     public static boolean isSameSuit(Card card1, Card card2) {
