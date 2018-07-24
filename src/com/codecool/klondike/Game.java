@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.codecool.klondike.Card.isOppositeColor;
-
 public class Game extends Pane {
 
     private List<Card> deck = new ArrayList<>();
@@ -114,8 +112,20 @@ public class Game extends Pane {
 
     public boolean isMoveValid(Card card, Pile destPile) {
         if (destPile.getPileType().equals(Pile.PileType.TABLEAU) &&
-                isOppositeColor(card, destPile.getTopCard()) &&
+                Card.isOppositeColor(card, destPile.getTopCard()) &&
                 destPile.getTopCard().getRank() == card.getRank() - 1) {
+            return true;
+        } else if (destPile.getPileType().equals(Pile.PileType.FOUNDATION) &&
+                Card.isSameSuit(card, destPile.getTopCard()) &&
+                destPile.getTopCard().getRank() == card.getRank() + 1) {
+            return true;
+        } else if (destPile.getPileType().equals(Pile.PileType.TABLEAU) &&
+                destPile.isEmpty() &&
+                card.getRank() == 13) {
+            return true;
+        } else if (destPile.getPileType().equals(Pile.PileType.FOUNDATION) &&
+                destPile.isEmpty() &&
+                card.getRank() == 1) {
             return true;
         }
         return false;
