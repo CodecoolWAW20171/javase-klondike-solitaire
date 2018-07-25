@@ -111,6 +111,7 @@ public class Game extends Pane {
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
+<<<<<<< Updated upstream
         if (destPile.getPileType().equals(Pile.PileType.TABLEAU) &&
                 Card.isOppositeColor(card, destPile.getTopCard()) &&
                 destPile.getTopCard().getRank() == card.getRank() - 1) {
@@ -127,6 +128,22 @@ public class Game extends Pane {
                 destPile.isEmpty() &&
                 card.getRank() == 1) {
             return true;
+=======
+        if (destPile.getPileType().equals(Pile.PileType.TABLEAU)) {
+            if (destPile.isEmpty()) {
+                return card.getRank() == 13;
+            } else {
+                return (Card.isOppositeColor(card, destPile.getTopCard()) &&
+                Card.isHigherRank(destPile.getTopCard(), card));
+            }
+        } else if (destPile.getPileType().equals(Pile.PileType.FOUNDATION)) {
+            if (destPile.isEmpty()) {
+                return card.getRank() ==  1;
+            } else {
+                return (Card.isSameSuit(card, destPile.getTopCard()) &&
+                Card.isHigherRank(destPile.getTopCard(), card));
+            }
+>>>>>>> Stashed changes
         }
         return false;
     }
