@@ -46,7 +46,9 @@ public class Game extends Pane {
         card = card.getContainingPile().getTopCard();
         if (card.getContainingPile().getPileType() == Pile.PileType.STOCK) {
             card.moveToPile(discardPile);
-            card.flip();
+            if (card.isFaceDown()) {
+                card.flip();
+            }
             card.setMouseTransparent(false);
             System.out.println("Placed " + card + " to the waste.");
         }
@@ -125,13 +127,13 @@ public class Game extends Pane {
 
     public void refillStockFromDiscard() {
         stockPile.clear();
+        Collections.reverse(discardPile.getCards());
         for (Card card : discardPile.getCards()) {
             stockPile.addCard(card);
             if (!card.isFaceDown()) {
                 card.flip();
             }
         }
-        Collections.reverse(stockPile.getCards());
         discardPile.clear();
         System.out.println("Stock refilled from discard pile.");
     }
