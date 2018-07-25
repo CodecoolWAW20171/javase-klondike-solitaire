@@ -60,7 +60,9 @@ public class Game extends Pane {
     };
 
     private EventHandler<MouseEvent> stockReverseCardsHandler = e -> {
-        refillStockFromDiscard();
+        if (stockPile.isEmpty()) {
+            refillStockFromDiscard();
+        }
     };
 
     private EventHandler<MouseEvent> onMousePressedHandler = e -> {
@@ -116,7 +118,6 @@ public class Game extends Pane {
             draggedCards.forEach(MouseUtil::slideBack);
             //draggedCards = null;
         }
-        if (isGameWon()) showModal("Congratulations!");
     };
 
     public boolean isGameWon() {
@@ -209,6 +210,9 @@ public class Game extends Pane {
         System.out.println(msg);
         MouseUtil.slideToDest(draggedCards, destPile);
         draggedCards.clear();
+        if (destPile.equals(Pile.PileType.FOUNDATION)) {
+            if (isGameWon()) showModal("Congratulations!");
+        }
     }
 
     private void initPiles() {
