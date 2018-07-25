@@ -69,7 +69,9 @@ public class Card extends ImageView {
     }
 
     public void autoflip() {
-        if(this.getContainingPile().getTopCard() != null && this.getContainingPile().getPileType().equals(Pile.PileType.TABLEAU)) {
+        if(this.getContainingPile().getTopCard() != null &&
+                this.getContainingPile().getPileType().equals(Pile.PileType.TABLEAU) &&
+                !this.getContainingPile().getTopCard().isFaceDown()) {
             this.getContainingPile().getTopCard().flip();
         }
     }
