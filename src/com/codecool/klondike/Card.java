@@ -63,8 +63,23 @@ public class Card extends ImageView {
     }
 
     public void moveToPile(Pile destPile) {
+        Pile myPile = this.getContainingPile();
         this.getContainingPile().getCards().remove(this);
         destPile.addCard(this);
+        if (!myPile.isEmpty()) {
+            if (myPile.getTopCard().isFaceDown() &&
+                    myPile.getPileType().equals(Pile.PileType.TABLEAU)) {
+                myPile.getTopCard().flip();
+            }
+        }
+    }
+
+    public void autoflip() {
+        if(this.getContainingPile().getTopCard() != null &&
+                this.getContainingPile().getPileType().equals(Pile.PileType.TABLEAU) &&
+                !this.getContainingPile().getTopCard().isFaceDown()) {
+            this.getContainingPile().getTopCard().flip();
+        }
     }
 
     public void flip() {
@@ -101,8 +116,8 @@ public class Card extends ImageView {
     }
 
     public static List<Card> createNewDeck() {
-        List<Card> result = new ArrayList<>();
 
+        List<Card> result = new ArrayList<>();
         for (int suit = 1; suit < 5; suit++) {
             for (int rank = 1; rank < 14; rank++) {
                 result.add(new Card(suit, rank, true));
