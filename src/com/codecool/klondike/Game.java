@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -13,6 +14,10 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,11 +116,27 @@ public class Game extends Pane {
             draggedCards.forEach(MouseUtil::slideBack);
             //draggedCards = null;
         }
+        if (isGameWon()) showModal("Congratulations!");
     };
 
     public boolean isGameWon() {
-        //TODO
-        return false;
+        for (Pile pile: foundationPiles)
+            if (pile.numOfCards() != 14) return false;
+        return true;
+    }
+
+    private void showModal(String msg) {
+        final Stage dialog = new Stage();
+        Text text = new Text(msg);
+        Scene dialogScene;
+
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        VBox dialogVbox = new VBox(20);
+        text.setStyle("-fx-font: 24 arial;");
+        dialogVbox.getChildren().add(text);
+        dialogScene = new Scene(dialogVbox, 250, 50);
+        dialog.setScene(dialogScene);
+        dialog.show();
     }
 
     public void addMouseEventHandlers(Card card) {
@@ -189,7 +210,6 @@ public class Game extends Pane {
         MouseUtil.slideToDest(draggedCards, destPile);
         draggedCards.clear();
     }
-
 
     private void initPiles() {
         stockPile = new Pile(Pile.PileType.STOCK, "Stock", STOCK_GAP);
