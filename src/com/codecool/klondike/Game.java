@@ -64,23 +64,35 @@ public class Game extends Pane {
     private EventHandler<MouseEvent> onMouseDraggedHandler = e -> {
         Card card = (Card) e.getSource();
         Pile activePile = card.getContainingPile();
-        if (activePile.getPileType() == Pile.PileType.STOCK)
-            return;
+
         double offsetX = e.getSceneX() - dragStartX;
         double offsetY = e.getSceneY() - dragStartY;
 
-        if (!card.isFaceDown()) {
-            draggedCards.clear();
+        draggedCards.clear();
+        if (activePile.getPileType() == Pile.PileType.STOCK) {
+            return;
+        } else if (activePile.getPileType() == Pile.PileType.TABLEAU && !card.isFaceDown()) {
+
+            draggedCards.addAll(activePile.getCards());
+            for (Card activePileCard : activePile.getCards()) {
+                if (activePileCard.equals(card)) {
+                    break;
+                }
+                draggedCards.remove(activePileCard);
+            }
+        } else if (!card.isFaceDown()) {
             draggedCards.add(card);
-
-            card.getDropShadow().setRadius(20);
-            card.getDropShadow().setOffsetX(10);
-            card.getDropShadow().setOffsetY(10);
-
-            card.toFront();
-            card.setTranslateX(offsetX);
-            card.setTranslateY(offsetY);
+        } else {
+            return;
         }
+
+        card.getDropShadow().setRadius(20);
+        card.getDropShadow().setOffsetX(10);
+        card.getDropShadow().setOffsetY(10);
+
+        card.toFront();
+        card.setTranslateX(offsetX);
+        card.setTranslateY(offsetY);
     };
 
     private EventHandler<MouseEvent> onMouseReleasedHandler = e -> {
@@ -95,7 +107,7 @@ public class Game extends Pane {
             handleValidMove(card, pile);
         } else {
             draggedCards.forEach(MouseUtil::slideBack);
-            draggedCards = null;
+            //draggedCards = null;
         }
     };
 
@@ -128,14 +140,14 @@ public class Game extends Pane {
                 return card.getRank() == 13;
             } else {
                 return (Card.isOppositeColor(card, destPile.getTopCard()) &&
-                Card.isHigherRank(destPile.getTopCard(), card));
+                        Card.isHigherRank(destPile.getTopCard(), card));
             }
         } else if (destPile.getPileType().equals(Pile.PileType.FOUNDATION)) {
             if (destPile.isEmpty()) {
-                return card.getRank() ==  1;
+                return card.getRank() == 1;
             } else {
                 return (Card.isSameSuit(card, destPile.getTopCard()) &&
-                Card.isHigherRank(card, destPile.getTopCard()));
+                        Card.isHigherRank(card, destPile.getTopCard()));
             }
         }
         return false;
@@ -191,8 +203,10 @@ public class Game extends Pane {
 
         Button restartBtn = new Button("Restart");
         restartBtn.setStyle("-fx-font: 18 arial; -fx-base: #666666;");
-        getChildren().add(restartBtn); restartBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override public void handle(MouseEvent e) {
+        getChildren().add(restartBtn);
+        restartBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
                 restart();
             }
         });
@@ -257,7 +271,7 @@ public class Game extends Pane {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
-    
+
     private void restart() {
         clearPane();
         deck = Card.createNewDeck();
