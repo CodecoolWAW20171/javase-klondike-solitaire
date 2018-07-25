@@ -246,6 +246,13 @@ public class Game extends Pane {
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
     
+    private void restart() {
+        clearPane();
+        deck = Card.createNewDeck();
+        initPiles();
+        dealCards();
+    }
+
     private void clearPane() {
         stockPile.clear();
         discardPile.clear();
