@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -85,9 +86,7 @@ public class Game extends Pane {
         if (draggedCards.isEmpty())
             return;
         Card card = (Card) e.getSource();
-        List<Pile> bothPiles = new ArrayList<>(tableauPiles);
-        bothPiles.addAll(foundationPiles);
-        Pile pile = getValidIntersectingPile(card, bothPiles);
+        Pile pile = getValidIntersectingPile(card, tableauPiles);
         //TODO
         if (pile != null) {
             handleValidMove(card, pile);
@@ -138,7 +137,7 @@ public class Game extends Pane {
     }
 
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
-        Pile result = card.getContainingPile();
+        Pile result = null;
         for (Pile pile : piles) {
             if (!pile.equals(card.getContainingPile()) &&
                     isOverPile(card, pile) &&
@@ -184,6 +183,15 @@ public class Game extends Pane {
         discardPile.setLayoutX(285);
         discardPile.setLayoutY(20);
         getChildren().add(discardPile);
+
+        Button restartBtn = new Button("Restart");
+        restartBtn.setStyle("-fx-font: 18 arial; -fx-base: #666666;");
+        getChildren().add(restartBtn); restartBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent e) {
+                restart();
+            }
+        });
+
 
         for (int i = 0; i < 4; i++) {
             Pile foundationPile = new Pile(Pile.PileType.FOUNDATION, "Foundation " + i, FOUNDATION_GAP);
@@ -244,5 +252,19 @@ public class Game extends Pane {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
+    
+    private void restart() {
+        clearPane();
+        deck = Card.createNewDeck();
+        initPiles();
+        dealCards();
+    }
 
+    private void clearPane() {
+        stockPile.clear();
+        discardPile.clear();
+        foundationPiles.clear();
+        tableauPiles.clear();
+        this.getChildren().clear();
+    }
 }
