@@ -64,7 +64,14 @@ public class Card extends ImageView {
 
     public void moveToPile(Pile destPile) {
         this.getContainingPile().getCards().remove(this);
+        autoflip();
         destPile.addCard(this);
+    }
+
+    public void autoflip() {
+        if(this.getContainingPile().getTopCard() != null) {
+            this.getContainingPile().getTopCard().flip();
+        }
     }
 
     public void flip() {
