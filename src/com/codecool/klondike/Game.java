@@ -86,7 +86,9 @@ public class Game extends Pane {
         if (draggedCards.isEmpty())
             return;
         Card card = (Card) e.getSource();
-        Pile pile = getValidIntersectingPile(card, tableauPiles);
+        List<Pile> bothPiles = new ArrayList<>(tableauPiles);
+        bothPiles.addAll(foundationPiles);
+        Pile pile = getValidIntersectingPile(card, bothPiles);
         //TODO
         if (pile != null) {
             handleValidMove(card, pile);
@@ -137,7 +139,7 @@ public class Game extends Pane {
     }
 
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
-        Pile result = null;
+        Pile result = card.getContainingPile();
         for (Pile pile : piles) {
             if (!pile.equals(card.getContainingPile()) &&
                     isOverPile(card, pile) &&
