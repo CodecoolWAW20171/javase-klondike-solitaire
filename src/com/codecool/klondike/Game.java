@@ -133,7 +133,7 @@ public class Game extends Pane {
                 return card.getRank() ==  1;
             } else {
                 return (Card.isSameSuit(card, destPile.getTopCard()) &&
-                Card.isHigherRank(destPile.getTopCard(), card));
+                Card.isHigherRank(card, destPile.getTopCard()));
             }
         }
         return false;
