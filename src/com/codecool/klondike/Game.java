@@ -116,7 +116,7 @@ public class Game extends Pane {
             draggedCards.forEach(MouseUtil::slideBack);
             //draggedCards = null;
         }
-        if (!isGameWon()) showModal("Congratulations!");
+        if (isGameWon()) showModal("Congratulations!");
     };
 
     public boolean isGameWon() {
