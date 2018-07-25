@@ -121,7 +121,7 @@ public class Game extends Pane {
 
     public boolean isGameWon() {
         for (Pile pile: foundationPiles)
-            if (pile.numOfCards() != 14) return false;
+            if (pile.numOfCards() != 13) return false;
         return true;
     }
 
