@@ -179,6 +179,11 @@ public class Game extends Pane {
 
         Button restartBtn = new Button("Restart");
         restartBtn.setStyle("-fx-font: 18 arial; -fx-base: #666666;");
+        getChildren().add(restartBtn); restartBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent e) {
+                restart();
+            }
+        });
 
 
         for (int i = 0; i < 4; i++) {
