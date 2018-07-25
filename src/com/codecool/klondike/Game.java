@@ -113,6 +113,7 @@ public class Game extends Pane {
     public void refillStockFromDiscard() {
         stockPile.clear();
         for (Card card : discardPile.getCards()) {
+            card.flip();
             stockPile.addCard(card);
         }
         discardPile.clear();
