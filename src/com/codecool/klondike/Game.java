@@ -186,9 +186,10 @@ public class Game extends Pane {
         int numberOfCard = 0;
         int startPile = 0;
         int countOfCardsToDeal = 27;
+        int countOfPiles = 7;
 
         for (Card card : deck) {
-            if (numberOfCard >= 28) {
+            if (numberOfCard > countOfCardsToDeal) {
                 stockPile.addCard(card);
                 addActionToCard(card);
             } else {
@@ -196,7 +197,7 @@ public class Game extends Pane {
                 addActionToCard(card);
                 numberOfPile++;
 
-                if (numberOfPile == 7) {
+                if (numberOfPile == countOfPiles) {
                     startPile++;
                     numberOfPile = startPile;
                 }
