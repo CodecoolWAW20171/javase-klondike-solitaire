@@ -79,7 +79,10 @@ public class Game extends Pane {
         double offsetY = e.getSceneY() - dragStartY;
 
         draggedCards.clear();
-        if (activePile.getPileType() == Pile.PileType.STOCK) {
+        if (activePile.getPileType() == Pile.PileType.STOCK ||
+                ((activePile.getPileType() == Pile.PileType.DISCARD ||
+                        activePile.getPileType() == Pile.PileType.FOUNDATION) &&
+                        card != activePile.getTopCard())) {
             return;
         } else if (activePile.getPileType() == Pile.PileType.TABLEAU && !card.isFaceDown()) {
             draggedCards.addAll(activePile.getCards());
