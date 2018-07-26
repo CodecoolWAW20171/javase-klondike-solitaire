@@ -118,12 +118,17 @@ public class Game extends Pane {
             draggedCards.forEach(MouseUtil::slideBack);
             //draggedCards = null;
         }
+        if (pile.getPileType().equals(Pile.PileType.FOUNDATION)) {
+            if (isGameWon() && pile.numOfCards() == 12) showModal("Congratulations!");
+        }
     };
 
     public boolean isGameWon() {
+        int s = 0;
         for (Pile pile: foundationPiles)
-            if (pile.numOfCards() != 13) return false;
-        return true;
+            if (pile.numOfCards() == 13) s++;
+        if (s == 3) return true;
+        return false;
     }
 
     private void showModal(String msg) {
@@ -210,9 +215,6 @@ public class Game extends Pane {
         System.out.println(msg);
         MouseUtil.slideToDest(draggedCards, destPile);
         draggedCards.clear();
-        if (destPile.equals(Pile.PileType.FOUNDATION)) {
-            if (isGameWon()) showModal("Congratulations!");
-        }
     }
 
     private void initPiles() {
