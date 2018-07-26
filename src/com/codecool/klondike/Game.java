@@ -47,8 +47,19 @@ public class Game extends Pane {
 
     private EventHandler<MouseEvent> onMouseClickedHandler = e -> {
         Card card = (Card) e.getSource();
-        card = card.getContainingPile().getTopCard();
+        if (e.getClickCount() == 2 && card == card.getContainingPile().getTopCard() &&
+                !card.getContainingPile().getPileType().equals(Pile.PileType.STOCK)) {
+            Pile pileToMove = possibleMove(card);
+
+            if (pileToMove != null) {
+                draggedCards.add(card);
+                handleValidMove(card, pileToMove);
+            }
+            draggedCards.clear();
+            return;
+        }
         if (card != null && card.getContainingPile().getPileType() == Pile.PileType.STOCK) {
+            card = card.getContainingPile().getTopCard();
             card.moveToPile(discardPile);
             if (card.isFaceDown()) {
                 card.flip();
@@ -341,5 +352,17 @@ public class Game extends Pane {
         foundationPiles.clear();
         tableauPiles.clear();
         this.getChildren().clear();
+    }
+
+    private Pile possibleMove(Card card) {
+        for (Pile pile: foundationPiles)
+            if(isMoveValid(card, pile)) {
+                return pile;
+            }
+        for (Pile pile: tableauPiles)
+            if(isMoveValid(card, pile)) {
+                return pile;
+            }
+        return null;
     }
 }
