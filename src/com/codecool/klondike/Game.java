@@ -103,6 +103,18 @@ public class Game extends Pane {
                 }
                 draggedCards.remove(activePileCard);
             }
+
+            offsetX = e.getSceneX() - dragStartX - 50;
+            offsetY = e.getSceneY() - dragStartY - 50;
+            for (Card draggedCard : draggedCards) {
+
+                draggedCard.getDropShadow().setOffsetX(0);
+                draggedCard.getDropShadow().setOffsetY(0);
+
+                draggedCard.setTranslateX(offsetX);
+                draggedCard.setTranslateY(offsetY);
+                draggedCard.relocate(dragStartX, dragStartY);
+            }
         } else if (!card.isFaceDown()) {
             draggedCards.add(card);
         } else {
