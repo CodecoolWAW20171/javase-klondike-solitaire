@@ -134,6 +134,9 @@ public class Game extends Pane {
             }
         }
         draggedCards.clear();
+        if (pile.getPileType().equals(Pile.PileType.FOUNDATION)) {
+            if (isGameWon() && pile.numOfCards() == 12) showModal("Congratulations!");
+        }
     };
 
     private void moveCardsToPile(Pile pile){
@@ -143,9 +146,12 @@ public class Game extends Pane {
     }
 
     public boolean isGameWon() {
-        for (Pile pile: foundationPiles)
-            if (pile.numOfCards() != 13) return false;
-        return true;
+        int s = 0;
+        for (Pile pile: foundationPiles) {
+            if (pile.numOfCards() == 13) s++;
+            if (s == 3) return true;
+        }
+        return false;
     }
 
     private void showModal(String msg) {
