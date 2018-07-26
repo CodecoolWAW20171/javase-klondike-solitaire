@@ -1,9 +1,7 @@
 package com.codecool.klondike;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -39,6 +37,7 @@ public class Game extends Pane {
     private static double STOCK_GAP = 1;
     private static double FOUNDATION_GAP = 0;
     private static double TABLEAU_GAP = 30;
+    private static double HIDDEN_GAP = 0;
 
     public Game() {
         deck = Card.createNewDeck();
@@ -74,6 +73,8 @@ public class Game extends Pane {
         Card card = (Card) e.getSource();
         Pile activePile = card.getContainingPile();
 
+        draggedCards.clear();
+
         double offsetX = e.getSceneX() - dragStartX;
         double offsetY = e.getSceneY() - dragStartY;
 
@@ -84,7 +85,6 @@ public class Game extends Pane {
                         card != activePile.getTopCard())) {
             return;
         } else if (activePile.getPileType() == Pile.PileType.TABLEAU && !card.isFaceDown()) {
-
             draggedCards.addAll(activePile.getCards());
             for (Card activePileCard : activePile.getCards()) {
                 if (activePileCard.equals(card)) {
@@ -114,13 +114,32 @@ public class Game extends Pane {
         List<Pile> bothPiles = new ArrayList<>(tableauPiles);
         bothPiles.addAll(foundationPiles);
         Pile pile = getValidIntersectingPile(card, bothPiles);
-        //TODO
-        if (pile != null) {
-            handleValidMove(card, pile);
+        if (draggedCards.size() > 1) {
+            Pile additionalPile = new Pile(Pile.PileType.HIDDEN, "", HIDDEN_GAP);
+            if (isMoveValid(draggedCards.get(0), pile)) {
+                for (Card draggedCard : draggedCards) {
+                    draggedCard.moveToPile(pile);
+                }
+            } else {
+                for (Card draggedCard : draggedCards) {
+                    draggedCard.moveToPile(additionalPile);
+                }
+
+                draggedCards.clear();
+                draggedCards.addAll(additionalPile.getCards());
+                for (Card draggedCard : draggedCards) {
+                    draggedCard.moveToPile(pile);
+                }
+            }
         } else {
-            draggedCards.forEach(MouseUtil::slideBack);
-            //draggedCards = null;
+            if (pile != null) {
+                handleValidMove(card, pile);
+            } else {
+                draggedCards.forEach(MouseUtil::slideBack);
+                draggedCards.clear();
+            }
         }
+        draggedCards.clear();
     };
 
     public boolean isGameWon() {
