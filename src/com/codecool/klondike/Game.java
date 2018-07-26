@@ -112,7 +112,6 @@ public class Game extends Pane {
             return;
         Card card = (Card) e.getSource();
         List<Pile> bothPiles = new ArrayList<>(tableauPiles);
-        bothPiles.addAll(foundationPiles);
         Pile pile = getValidIntersectingPile(card, bothPiles);
         if (draggedCards.size() > 1) {
             Pile additionalPile = new Pile(Pile.PileType.HIDDEN, "", HIDDEN_GAP);
@@ -125,6 +124,8 @@ public class Game extends Pane {
                 moveCardsToPile(pile);
             }
         } else {
+            bothPiles.addAll(foundationPiles);
+            pile = getValidIntersectingPile(card, bothPiles);
             if (pile != null) {
                 handleValidMove(card, pile);
             } else {
