@@ -114,19 +114,12 @@ public class Game extends Pane {
         if (draggedCards.size() > 1) {
             Pile additionalPile = new Pile(Pile.PileType.HIDDEN, "", HIDDEN_GAP);
             if (isMoveValid(draggedCards.get(0), pile)) {
-                for (Card draggedCard : draggedCards) {
-                    draggedCard.moveToPile(pile);
-                }
+                moveCardsToPile(pile);
             } else {
-                for (Card draggedCard : draggedCards) {
-                    draggedCard.moveToPile(additionalPile);
-                }
-
+                moveCardsToPile(additionalPile);
                 draggedCards.clear();
                 draggedCards.addAll(additionalPile.getCards());
-                for (Card draggedCard : draggedCards) {
-                    draggedCard.moveToPile(pile);
-                }
+                moveCardsToPile(pile);
             }
         } else {
             if (pile != null) {
@@ -138,6 +131,12 @@ public class Game extends Pane {
         }
         draggedCards.clear();
     };
+
+    private void moveCardsToPile(Pile pile){
+        for (Card draggedCard : draggedCards) {
+            draggedCard.moveToPile(pile);
+        }
+    }
 
     public boolean isGameWon() {
         for (Pile pile: foundationPiles)
