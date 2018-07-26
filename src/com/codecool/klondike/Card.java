@@ -68,7 +68,8 @@ public class Card extends ImageView {
         destPile.addCard(this);
         if (!myPile.isEmpty()) {
             if (myPile.getTopCard().isFaceDown() &&
-                    myPile.getPileType().equals(Pile.PileType.TABLEAU)) {
+                    myPile.getPileType().equals(Pile.PileType.TABLEAU) &&
+                    !destPile.getPileType().equals(Pile.PileType.HIDDEN)) {
                 myPile.getTopCard().flip();
             }
         }

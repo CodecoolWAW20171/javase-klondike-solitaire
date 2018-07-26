@@ -23,12 +23,19 @@ public class MouseUtil {
         double sourceY = card.getLayoutY() + card.getTranslateY();
         double targetX = card.getLayoutX();
         double targetY = card.getLayoutY();
+
         animateCardMovement(card, sourceX, sourceY,
                 targetX, targetY, Duration.millis(150), e -> {
                     card.getDropShadow().setRadius(2);
                     card.getDropShadow().setOffsetX(0);
                     card.getDropShadow().setOffsetY(0);
                 });
+    }
+
+    public static void slidesBack(List<Card> cards) {
+        for (Card card : cards) {
+            slideBack(card);
+        }
     }
 
     public static void slideToDest(List<Card> cardsToSlide, Pile destPile) {
