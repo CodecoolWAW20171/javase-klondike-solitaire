@@ -21,4 +21,4 @@ Check the rules here: http://codekata.com/kata/kata20-klondike/
 
 ## Screenshots
 
-![Board](screenshots/main.png)
+![Board](screenshots/main.PNG)
